@@ -6,6 +6,7 @@ import ResultsDisplay from './components/ResultsDisplay';
 import Visualizer from './components/Visualizer';
 import GrowthChart from './components/GrowthChart';
 import { getWealthInsight } from './utils/formatters';
+import { RotateCcw, Share2, Download } from 'lucide-react';
 
 function App() {
   const sip = useSIP();
@@ -16,15 +17,34 @@ function App() {
       maximumFractionDigits: 0 
     }).format(val);
 
+  const handleShare = () => {
+    const url = `${window.location.origin}${window.location.pathname}?amt=${sip.amount}&yr=${sip.years}&rt=${sip.rate}`;
+    navigator.clipboard.writeText(url);
+    alert("Plan link copied to clipboard!");
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 lg:p-10">
       <div className="max-w-7xl mx-auto">
-        
-        <header className="mb-6 md:mb-10 text-center lg:text-left">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">FinCalc Pro</h1>
-          <p className="text-slate-500 font-medium tracking-wide uppercase text-[10px] md:text-xs">
-            Professional Investment Planner
-          </p>
+
+        <header className="mb-6 md:mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-center md:text-left">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">FinCalc Pro</h1>
+            <p className="text-slate-500 font-medium tracking-wide uppercase text-[10px] md:text-xs">Professional Investment Planner</p>
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="flex gap-3">
+            <button onClick={sip.reset} className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2 text-sm font-bold">
+              <RotateCcw size={16} /> <span className="hidden sm:inline">Reset</span>
+            </button>
+            <button onClick={handleShare} className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2 text-sm font-bold">
+              <Share2 size={16} /> <span className="hidden sm:inline">Copy Link</span>
+            </button>
+            <button onClick={() => window.print()} className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all flex items-center gap-2 text-sm font-bold shadow-lg shadow-indigo-200">
+              <Download size={16} /> <span className="hidden sm:inline">Download PDF</span>
+            </button>
+          </div>
         </header>
 
         {/* The Grid */}
