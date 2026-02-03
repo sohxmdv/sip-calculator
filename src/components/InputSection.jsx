@@ -1,20 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const InputSection = ({ sip, formatINR }) => {
+const InputSection = ({ sip }) => {
+  // Helper to ensure typed values stay within slider limits
+  const handleInputChange = (e, setter, min, max) => {
+    let value = e.target.value === '' ? '' : Number(e.target.value);
+    if (value !== '' && value > max) value = max;
+    setter(value);
+  };
+
   return (
     <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
       
-      {/* MODE TOGGLE: Toggles between SIP, Step-Up, and Lumpsum */}
+      {/* MODE TOGGLE */}
       <div className="flex p-1 bg-slate-100 rounded-xl mb-10">
         {['SIP', 'Step-Up', 'Lumpsum'].map((m) => (
           <button
             key={m}
             onClick={() => sip.setMode(m)}
             className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${
-              sip.mode === m 
-                ? 'bg-white shadow-sm text-indigo-600' 
-                : 'text-slate-500 hover:text-slate-700'
+              sip.mode === m ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
             {m}
@@ -22,71 +27,99 @@ const InputSection = ({ sip, formatINR }) => {
         ))}
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-10">
         
-        {/* INVESTMENT AMOUNT: Dynamic label based on mode */}
+        {/* AMOUNT INPUT */}
         <div className="space-y-4">
-          <div className="flex justify-between items-end">
+          <div className="flex justify-between items-center">
             <label className="text-sm font-bold text-slate-600 uppercase tracking-wider">
-              {sip.mode === 'Lumpsum' ? 'Total Investment' : 'Monthly SIP Amount'}
+              {sip.mode === 'Lumpsum' ? 'Investment' : 'Monthly SIP'}
             </label>
-            <span className="text-xl font-bold text-indigo-600">{formatINR(sip.amount)}</span>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600 font-bold">₹</span>
+              <input 
+                type="number"
+                value={sip.amount}
+                onChange={(e) => handleInputChange(e, sip.setAmount, 500, 1000000)}
+                className="w-32 pl-7 pr-3 py-2 bg-indigo-50 border-none rounded-xl text-right font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+              />
+            </div>
           </div>
           <input 
             type="range" min="500" max="100000" step="500" 
-            value={sip.amount} 
+            value={sip.amount || 0} 
             onChange={(e) => sip.setAmount(Number(e.target.value))} 
             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
           />
         </div>
 
-        {/* EXPECTED RETURN RATE */}
+        {/* RETURNS INPUT */}
         <div className="space-y-4">
-          <div className="flex justify-between items-end">
-            <label className="text-sm font-bold text-slate-600 uppercase tracking-wider text-left">Expected Return (p.a)</label>
-            <span className="text-xl font-bold text-indigo-600">{sip.rate}%</span>
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-bold text-slate-600 uppercase tracking-wider">Expected Return (p.a)</label>
+            <div className="relative">
+              <input 
+                type="number"
+                step="0.1"
+                value={sip.rate}
+                onChange={(e) => handleInputChange(e, sip.setRate, 1, 30)}
+                className="w-24 pr-8 py-2 bg-indigo-50 border-none rounded-xl text-right font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-600 font-bold">%</span>
+            </div>
           </div>
           <input 
-            type="range" min="1" max="30" step="0.5" 
-            value={sip.rate} 
+            type="range" min="1" max="30" step="0.1" 
+            value={sip.rate || 0} 
             onChange={(e) => sip.setRate(Number(e.target.value))} 
             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
           />
         </div>
 
-        {/* INVESTMENT DURATION */}
+        {/* YEARS INPUT */}
         <div className="space-y-4">
-          <div className="flex justify-between items-end">
-            <label className="text-sm font-bold text-slate-600 uppercase tracking-wider text-left">Time Period (Years)</label>
-            <span className="text-xl font-bold text-indigo-600">{sip.years} Yr</span>
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-bold text-slate-600 uppercase tracking-wider">Time Period (Yr)</label>
+            <input 
+              type="number"
+              value={sip.years}
+              onChange={(e) => handleInputChange(e, sip.setYears, 1, 40)}
+              className="w-20 px-3 py-2 bg-indigo-50 border-none rounded-xl text-right font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
           </div>
           <input 
             type="range" min="1" max="40" 
-            value={sip.years} 
+            value={sip.years || 0} 
             onChange={(e) => sip.setYears(Number(e.target.value))} 
             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
           />
         </div>
 
-        {/* BONUS: ANNUAL STEP-UP SLIDER */}
-        {/* This section only renders when "Step-Up" mode is selected */}
+        {/* STEP-UP INPUT (Bonus Requirement 4a) */}
         {sip.mode === 'Step-Up' && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }} 
-            animate={{ opacity: 1, height: 'auto' }} 
-            className="space-y-4 pt-4 border-t border-slate-100"
+            initial={{ opacity: 0, y: -10 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            className="space-y-4 pt-6 border-t border-slate-100"
           >
-            <div className="flex justify-between items-end">
-              <label className="text-sm font-bold text-indigo-600 uppercase tracking-wider text-left">Annual Step-Up %</label>
-              <span className="text-xl font-bold text-indigo-600">{sip.stepUp}%</span>
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-bold text-indigo-600 uppercase tracking-wider">Annual Step-Up</label>
+              <div className="relative">
+                <input 
+                  type="number"
+                  value={sip.stepUp}
+                  onChange={(e) => handleInputChange(e, sip.setStepUp, 1, 50)}
+                  className="w-24 pr-8 py-2 bg-indigo-50 border-none rounded-xl text-right font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-600 font-bold">%</span>
+              </div>
             </div>
             <input 
               type="range" min="1" max="50" 
-              value={sip.stepUp} 
+              value={sip.stepUp || 0} 
               onChange={(e) => sip.setStepUp(Number(e.target.value))} 
               className="w-full h-2 bg-indigo-100 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
             />
-            <p className="text-[10px] text-slate-400 italic">Your investment will increase by {sip.stepUp}% every year.</p>
           </motion.div>
         )}
       </div>
