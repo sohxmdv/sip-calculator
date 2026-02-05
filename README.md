@@ -1,16 +1,99 @@
-# React + Vite
+# 🚀 PlanFolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**PlanFolio** is a high-performance, professional **investment planning dashboard** built to help users strategize wealth growth using **SIP, Step-Up SIP, and Lumpsum** models. 
 
-Currently, two official plugins are available:
+Built as part of a frontend engineering assessment, it prioritizes a premium user experience, real-time feedback, and clean, modular code architecture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🌐 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔗 **Deployed on Vercel:** [https://sip-calculator-lilac.vercel.app/](https://sip-calculator-lilac.vercel.app/)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Advanced Features
+
+- 📈 **SIP Calculator** (Monthly Investment)
+- 🔁 **Step-Up SIP** with annual increment
+- 💰 **Lumpsum Investment Calculator**
+- 📊 Interactive **Growth Chart**
+- 🧮 Real-time calculations
+- 🎨 Premium dark UI with Tailwind
+- 📱 Fully responsive (mobile-first)
+- 📤 Share & Download (PDF-ready UI)
+---
+
+## 🧮 Financial Logic
+
+### 📌 SIP (Systematic Investment Plan)
+Standard monthly compounding formula:
+$$FV = P \times \frac{(1 + r)^n - 1}{r} \times (1 + r)$$
+
+### 📌 Step-Up SIP
+Investment increases by $X\%$ annually, compounding each year's new base amount independently.
+
+### 📌 Lumpsum
+Standard compound interest formula:
+$$FV = P \times (1 + r)^n$$
+
+---
+
+## 🛠 Tech Stack
+
+- **React (Vite)**: Component-based architecture.
+- **Tailwind CSS**: Utility-first styling for a premium feel.
+- **Recharts**: High-performance data visualization.
+- **Framer Motion**: For smooth transitions and subtle animations.
+- **Custom Hooks**: Decoupled state management via `useSIP.js`.
+
+---
+
+## 📂 Modular Structure
+```text
+src/
+ ├── components/  # Atomic UI (Input, Display, Charts)
+ ├── hooks/       # Business logic (State & Calculations)
+ ├── utils/       # Math formulas & Formatters
+ ├── App.jsx      # Balanced responsive grid layout
+ └── main.jsx     # Entry point
+```
+
+## ⚙️ Setup & Installation
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/sohxmdv/sip-calculator.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Run local dev server**
+   ```bash
+   npm run dev
+   ```
+   
+---
+
+## 📌 Assumptions
+
+- Returns are compounded **monthly**
+- Step-Up increment is applied **annually**
+- Taxes, inflation, and market volatility are **not considered**
+
+---
+
+## 🚀 Future Enhancements
+
+- Inflation-adjusted returns
+- Historical market presets
+- Multi-goal investment planning
+- User profiles & saved investment plans
+
+---
+
+## 👨‍💻 Author
+
+**Soham Dave**
