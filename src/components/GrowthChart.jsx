@@ -3,6 +3,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, 
   Tooltip, ResponsiveContainer, Label 
 } from 'recharts';
+import { calculateResults } from "../utils/calculations";
 
 // Custom Tooltip for detailed hover interaction
 const CustomTooltip = ({ active, payload, label }) => {
@@ -30,22 +31,23 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const GrowthChart = ({ monthlyAmount, rate, years }) => {
+const GrowthChart = ({ monthlyAmount, expectedReturn, duration, isStepUp, stepUpPercentage, lumpsumAmount }) => {
   // Logic to generate annual data points
-  const data = Array.from({ length: years + 1 }, (_, year) => {
-    const i = rate / 100 / 12;
-    const n = year * 12;
-    
-    // SIP Calculation for the specific year
-    const sipValue = year === 0 ? 0 : monthlyAmount * (((Math.pow(1 + i, n) - 1) / i) * (1 + i));
-    const invested = monthlyAmount * n;
-    const gains = Math.max(0, sipValue - invested);
+  const data = Array.from({ length: duration + 1 }, (_, year) => {
+    const results = calculateResults({
+      monthlyAmount,
+      expectedReturn,
+      duration: year,
+      isStepUp,
+      stepUpPercentage,
+      lumpsumAmount
+    });
 
     return {
       year: `Year ${year}`,
-      total: Math.round(sipValue),
-      invested: Math.round(invested),
-      gains: Math.round(gains),
+      total: results.totalMaturityValue,
+      invested: results.totalInvested,
+      gains: results.estimatedReturns
     };
   });
 

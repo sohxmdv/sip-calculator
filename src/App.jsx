@@ -88,7 +88,14 @@ function App() {
                   <Visualizer invested={sip.results.totalInvested} returns={sip.results.estimatedReturns} />
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <GrowthChart monthlyAmount={sip.amount} rate={sip.rate} years={sip.years} />
+                  <GrowthChart
+                    monthlyAmount={sip.mode === "Lumpsum" ? 0 : sip.amount}
+                    expectedReturn={sip.rate}
+                    duration={sip.years}
+                    isStepUp={sip.mode === "Step-Up"}
+                    stepUpPercentage={sip.stepUp}
+                    lumpsumAmount={sip.mode === "Lumpsum" ? sip.amount : 0}
+                  />
                 </div>
               </div>
 
