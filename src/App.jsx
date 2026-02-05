@@ -29,8 +29,8 @@ function App() {
 
         <header className="mb-6 md:mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">FinCalc Pro</h1>
-            <p className="text-slate-400 font-medium tracking-wide uppercase text-[10px] md:text-xs">Professional Investment Planner</p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">PlanFolio</h1>
+            <p className="text-slate-400 font-medium tracking-wide uppercase text-[10px] md:text-xs">Smart SIP & Investment Growth Planner</p>
           </div>
 
           {/* ACTION BUTTONS */}
