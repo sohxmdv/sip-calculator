@@ -7,7 +7,7 @@ const Visualizer = ({ invested, returns }) => {
     { name: 'Total Returns', value: returns },
   ];
 
-  const COLORS = ['#4F46E5', '#10B981']; // Indigo and Emerald
+  const COLORS = ['#64748b', '#10B981']; 
 
   return (
     <div className="h-[300px] w-full mt-6">
@@ -19,6 +19,7 @@ const Visualizer = ({ invested, returns }) => {
             outerRadius={80}
             paddingAngle={5}
             dataKey="value"
+            stroke="none"
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
